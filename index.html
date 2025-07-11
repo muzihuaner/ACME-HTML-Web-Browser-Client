@@ -1,113 +1,216 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAe1BMVEUDuu3///8AtuwAue1c0/QAt+1a0vSZ4/gOve4Ju+4AtOzf9v31/P4iw/DS8/yf5fnE7/tNzvMsxvHw+/7t+v7k+P2U4veO4PeA3Pbp+f7h9/3Y9f3I8Pxt1/Vi1PRQz/NDzPIzyPEWv+76/v/3/f+87fqn5/mI3/Z82vb+fQDoAAAA10lEQVQ4y63T2c7CIBCGYWamUwFZurfuy7/e/xVaeySlYmJ8T78nISQgPh0xU2pGZa1EfrazHJz5an2FT3brYKoul4UqAHx5Hhqoq6VTMAc4aER9acDjEviFPd2voP9gKykGVECHkzyBsRzvI+g1jWG5BFDIPXRKjqkcTKUwPISPbvsN9XpqA9DuehXsF4g64APALAY+AHkMVm+CzToNVld1NAmwE0zaJ0DBQughAcxZ66tLAGj6f/f2NdMgewXKGHSPgOTPfG/Dh0vqlAXlluefahaLT3UDvrAKrj7jLKkAAAAASUVORK5CYII=" />
 
-<title>ACME Web Browser Client | ACME客户端H5网页单文件版，在线免费申请签发SSL/TLS通配符泛域名HTTPS证书，支持Let's Encrypt、ZeroSSL，无需账号免登录注册 | Windows macOS Get Wildcard Certificates Online For Free - Single HTML File</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+<title>SSL证书申请工具 | 免费HTTPS证书在线申请</title>
 </head>
 
 <body>
 <script>
-var Version="1.0.240804";
-console.log("LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE");
-/***********************************
-中英对照翻译主要来自：Chrome自带翻译+百度翻译，由中文翻译成English（作者英文很菜）。
-The Chinese-English translation is mainly from: Chrome comes with translation + Baidu translation, which is translated from Chinese to English (the author's English level is very low)
-
-感谢围观本客户端源码，所有功能的代码都在本页面一个文件内，逻辑上会比较长和比较丑（关键地方或多或少有写注释），如感不适，请转头看看旁边的大长腿，再深呼吸一下继续看下一行~
-Thank you for watching the source code of this client. The code of all functions is in one file on this page, which is logically long and ugly (more or less comments are written in key places). If you feel uncomfortable, please turn your head and look at the Big Long Legs next to you, take another deep breath and continue to look at the next line~
-************************************/
+var Version="1.0";
+console.log("LICENSE: GPL-3.0, https://github.com/muzihuaner/ACME-HTML-Web-Browser-Client");
 </script>
 
 
-<div class="main-load" style="padding-top:40vh;text-align:center;font-size:28px">Loading...</div>
+<div class="main-load">
+	<div class="spinner-border text-light" role="status">
+		<span class="visually-hidden">Loading...</span>
+	</div>
+	<span class="ms-3">正在加载...</span>
+</div>
+
 <div class="main" style="display:none">
 <div class="mainBox acmeReadDirGotoCORSState" style="display:none"></div>
 
+<!-- 主标题区域 -->
 <div class="mainBox">
-	<span style="font-size:32px;font-weight:bold;color:#03baed;">
-		<span class="langCN clientNameCN">HTML5网页版ACME客户端</span>
-		<span class="langEN clientNameEN">ACME Web Browser Client</span>
-	</span>
-	<span class="versionBox" style="font-size:14px;color:#03baed;margin-right:80px"></span>
-	<span style="display:inline-block">
-		<span class="langCN">开源代码：</span>
-		<span class="langEN">Open source: </span>
-		<a href="https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client" target="_blank">GitHub >></a>
-		<span class="langCN">
-			| <a href="https://gitee.com/xiangyuecn/ACME-HTML-Web-Browser-Client" target="_blank">Gitee >></a>
-		</span>
-	</span>
-	
-	<ul class="itemBox feature_ul" style="list-style-type: none;margin:8px 0 0 0;padding:0 8px 0 8px;color:#666">
-		<li class="langCN"><i>功能用途</i>本网页客户端用于：向 <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a>、<a href="https://zerossl.com/" target="_blank">ZeroSSL</a>、<a href="https://pki.goog/" target="_blank">Google</a> 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（RSA、ECC/ECDSA），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境，无需下载和安装软件，纯手动操作，<span class="Bold">只专注于申请获得证书这一件事。</span></li>
-		<li class="langEN"><i>Functional use</i>This web client is used to: apply for free SSL/TLS domain name certificates (RSA, ECC/ECDSA) for HTTPS from <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a> , <a href="https://zerossl.com/" target="_blank">ZeroSSL</a> , <a href="https://pki.goog/" target="_blank">Google</a> and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment, does not need to download and install software, and is purely manual, <span class="Bold">only focus on the only thing that is to apply for and obtain a certificate.</span></li>
-		
-		<li class="langCN"><i>简单易用</i>点点鼠标 Ctrl+C Ctrl+V 就能完成证书的申请，全程需要的操作少，每一步都有保姆级操作提示，UI友好大气美观；<span class="Bold">本客户端不需要注册账号、更不需要登录。</span></li>
-		<li class="langEN"><i>Easy to use</i>Click the mouse and Ctrl+C Ctrl+V to complete the certificate application. The whole process requires less operations, and there are nanny level operation prompts at each step; UI friendly, atmospheric and beautiful; <span class="Bold">This client does not need to register an account, and does not need to log in.</span></li>
-		
-		<li class="langCN"><i>开源项目</i>本网页客户端源码已开源，访问网址由托管仓库提供，源码透明可追溯。</li>
-		<li class="langEN"><i>Open source project</i>The source code of the client side of this webpage has been open sourced, and the access URL is provided by the hosting warehouse, and the source code is transparent and traceable.</li>
-		
-		<li class="langCN"><i>单一文件</i>本网页客户端仅一个静态 HTML 文件，不依赖其他任何文件；因此可以直接保存到你本地（右键-另存为），即可通过浏览器打开。</li>
-		<li class="langEN"><i>A single file</i>This web client is only a single static HTML web page file and does not depend on any other files; therefore, it can be directly saved to your local (right-click - save as), and you can open it through a browser.</li>
-		
-		<li class="langCN"><i>数据安全</i>除了你指定证书颁发机构的 ACME 接口地址外，本网页客户端不会向其他任何地址发送数据，通过浏览器控制台很容易做到网络数据审查。</li>
-		<li class="langEN"><i>Data security</i>Except for the ACME interface address of the certificate authority you specify, this web client will not send data to any other address, and it is easy to check the network data through the browser console.</li>
-		
-		<li class="langCN"><i>系统安全</i>纯网页应用，不会也无法对你的电脑系统做出任何修改。</li>
-		<li class="langEN"><i>System security</i>Pure web application, will not and cannot make any modification to your computer system.</li>
-		
-		<li class="langCN" style="color:#cb1d1d"><i style="background:#cb1d1d">证书过期风险提醒</i>由于本网页客户端只能纯手动操作，不支持自动续期，需注意在证书过期前重新生申请新证书（免费证书普遍90天有效期，届时只需重复操作一遍即可），或使用 acme.sh 等客户端自动化续期。</li>
-		<li class="langEN" style="color:#cb1d1d"><i style="background:#cb1d1d">Certificate Expiration Risk Alert</i>Since this web client can only be operated manually and does not support automatic renewal, you should pay attention to apply for a new certificate before the certificate expires (free certificates are generally valid for 90 days, you only need to repeat the operation at that time), or use acme.sh and other client automatic renewal.</li>
-	</ul>
-	<style>
-		.feature_ul li{margin: 8px 0;}
-		.feature_ul i{
-			font-style: normal;
-			margin-right:8px;
-			display: inline-block;
-			vertical-align: middle;
-			background: #03baed;
-			color: #fff;
-			font-size: 14px;
-			padding: 2px 8px;
-			border-radius: 99px;
-		}
-	</style>
+	<div class="text-center py-4">
+		<div class="mb-4">
+			<div class="feature-icon text-primary" style="font-size: 3rem;">
+				<i class="bi bi-shield-lock-fill"></i>
+				<span class="fallback-icon">🔒</span>
+			</div>
+		</div>
+		<h1 class="display-4 fw-bold text-primary mb-3">
+			<span class="langCN clientNameCN">SSL证书申请工具</span>
+			<span class="langEN clientNameEN">SSL Certificate Tool</span>
+		</h1>
+		<p class="lead text-muted mb-4">
+			<span class="langCN">免费申请Let's Encrypt、ZeroSSL等HTTPS证书</span>
+			<span class="langEN">Free SSL certificates from Let's Encrypt, ZeroSSL and more</span>
+		</p>
+		<div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+			<span class="versionBox badge bg-primary fs-6"></span>
+			<div class="d-flex gap-2">
+				<a href="https://github.com/muzihuaner/ACME-HTML-Web-Browser-Client" target="_blank"
+				   class="btn btn-outline-primary btn-sm">
+					<i class="bi bi-github"></i> GitHub
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- 功能特点 -->
+	<div class="row g-4 mt-3">
+		<div class="col-md-4">
+			<div class="text-center">
+				<div class="feature-icon text-warning" style="font-size: 2rem;">
+					<i class="bi bi-lightning-charge-fill"></i>
+					<span class="fallback-icon">⚡</span>
+				</div>
+				<h5 class="mt-3 langCN">简单易用</h5>
+				<h5 class="mt-3 langEN">Easy to Use</h5>
+				<p class="text-muted small langCN">无需注册账号，点击几下即可完成</p>
+				<p class="text-muted small langEN">No registration required, just a few clicks</p>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="text-center">
+				<div class="feature-icon text-success" style="font-size: 2rem;">
+					<i class="bi bi-shield-check-fill"></i>
+					<span class="fallback-icon">🛡️</span>
+				</div>
+				<h5 class="mt-3 langCN">安全可靠</h5>
+				<h5 class="mt-3 langEN">Secure & Safe</h5>
+				<p class="text-muted small langCN">开源透明，数据不会发送到第三方</p>
+				<p class="text-muted small langEN">Open source, no data sent to third parties</p>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="text-center">
+				<div class="feature-icon text-info" style="font-size: 2rem;">
+					<i class="bi bi-globe"></i>
+					<span class="fallback-icon">🌐</span>
+				</div>
+				<h5 class="mt-3 langCN">支持多域名</h5>
+				<h5 class="mt-3 langEN">Multi-Domain</h5>
+				<p class="text-muted small langCN">支持通配符域名和多域名证书</p>
+				<p class="text-muted small langEN">Wildcard and multi-domain certificates</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- 重要提醒 -->
+	<div class="alert alert-warning mt-4" role="alert">
+		<i class="bi bi-exclamation-triangle-fill me-2"></i>
+		<strong class="langCN">重要提醒：</strong>
+		<strong class="langEN">Important:</strong>
+		<span class="langCN">免费证书有效期90天，需要手动续期</span>
+		<span class="langEN">Free certificates are valid for 90 days and require manual renewal</span>
+	</div>
+
+	<!-- 步骤指示器 -->
+	<div class="step-indicator mt-5">
+		<div class="step active" id="step1">
+			<div class="feature-icon">
+				<i class="bi bi-1-circle"></i>
+				<span class="fallback-icon">1</span>
+			</div>
+		</div>
+		<div class="step" id="step2">
+			<div class="feature-icon">
+				<i class="bi bi-2-circle"></i>
+				<span class="fallback-icon">2</span>
+			</div>
+		</div>
+		<div class="step" id="step3">
+			<div class="feature-icon">
+				<i class="bi bi-3-circle"></i>
+				<span class="fallback-icon">3</span>
+			</div>
+		</div>
+		<div class="step" id="step4">
+			<div class="feature-icon">
+				<i class="bi bi-4-circle"></i>
+				<span class="fallback-icon">4</span>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 
 
 
+<!-- 步骤一：选择证书颁发机构 -->
 <div class="mainBox">
-	<div class="pd itemTitle">
+	<div class="itemTitle">
 		<span class="langCN">步骤一：选择证书颁发机构</span>
-		<span class="langEN">Step 1: Select a Certificate Authority</span>
+		<span class="langEN">Step 1: Select Certificate Authority</span>
 	</div>
+
 	<div class="itemBox">
-		<div class="pd Bold">
-			<i class="must">*</i>
-			<span class="langCN">证书颁发机构 ACME(v2, <a href="https://www.rfc-editor.org/rfc/rfc8555.html" target="_blank">RFC 8555</a>) 服务URL：</span>
-			<span class="langEN">Certificate Authority ACME (v2, <a href="https://www.rfc-editor.org/rfc/rfc8555.html" target="_blank">RFC 8555</a>) Service URL:</span>
-		</div>
-		<div class="pd">
-			<label><input type="radio" name="choice_acmeURL" value="https://acme-v02.api.letsencrypt.org/directory" desckey="descLetsEncrypt">Let's Encrypt</label>
-			<label><input type="radio" name="choice_acmeURL" value="https://acme.zerossl.com/v2/DV90/directory" desckey="descZeroSSL">ZeroSSL</label>
-			<label><input type="radio" name="choice_acmeURL" value="https://dv.acme-v02.api.pki.goog/directory" desckey="descGoogle">Google</label>
-			<label>
-				<input type="radio" name="choice_acmeURL" value="manual">
-				<span class="langCN">手动填写URL</span>
-				<span class="langEN">Fill in the URL manually</span>
-			</label>
-			<label>
-				<input type="radio" name="choice_acmeURL" value="https://acme-staging-v02.api.letsencrypt.org/directory">
-				<span class="langCN">测试用[不要选]</span>
-				<span class="langEN">For testing, don't choose</span>
-			</label>
+		<h6 class="fw-bold mb-3">
+			<span class="text-danger">*</span>
+			<span class="langCN">选择证书颁发机构：</span>
+			<span class="langEN">Choose Certificate Authority:</span>
+		</h6>
+
+		<div class="row g-3">
+			<div class="col-md-6">
+				<div class="form-check p-3 border rounded hover-card">
+					<input class="form-check-input" type="radio" name="choice_acmeURL"
+						   value="https://acme-v02.api.letsencrypt.org/directory" desckey="descLetsEncrypt" id="ca1">
+					<label class="form-check-label w-100" for="ca1">
+						<div class="d-flex align-items-center">
+							<i class="bi bi-shield-check text-success me-2"></i>
+							<strong>Let's Encrypt</strong>
+						</div>
+						<small class="text-muted langCN">最受欢迎的免费证书</small>
+						<small class="text-muted langEN">Most popular free certificates</small>
+					</label>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-check p-3 border rounded hover-card">
+					<input class="form-check-input" type="radio" name="choice_acmeURL"
+						   value="https://acme.zerossl.com/v2/DV90/directory" desckey="descZeroSSL" id="ca2">
+					<label class="form-check-label w-100" for="ca2">
+						<div class="d-flex align-items-center">
+							<i class="bi bi-shield-lock text-primary me-2"></i>
+							<strong>ZeroSSL</strong>
+						</div>
+						<small class="text-muted langCN">需要EAB凭据</small>
+						<small class="text-muted langEN">Requires EAB credentials</small>
+					</label>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-check p-3 border rounded hover-card">
+					<input class="form-check-input" type="radio" name="choice_acmeURL"
+						   value="https://dv.acme-v02.api.pki.goog/directory" desckey="descGoogle" id="ca3">
+					<label class="form-check-label w-100" for="ca3">
+						<div class="d-flex align-items-center">
+							<i class="bi bi-google text-warning me-2"></i>
+							<strong>Google Trust Services</strong>
+						</div>
+						<small class="text-muted langCN">需要EAB凭据</small>
+						<small class="text-muted langEN">Requires EAB credentials</small>
+					</label>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-check p-3 border rounded hover-card">
+					<input class="form-check-input" type="radio" name="choice_acmeURL" value="manual" id="ca4">
+					<label class="form-check-label w-100" for="ca4">
+						<div class="d-flex align-items-center">
+							<i class="bi bi-pencil-square text-secondary me-2"></i>
+							<strong class="langCN">自定义URL</strong>
+							<strong class="langEN">Custom URL</strong>
+						</div>
+						<small class="text-muted langCN">手动填写ACME服务地址</small>
+						<small class="text-muted langEN">Manually enter ACME service URL</small>
+					</label>
+				</div>
+			</div>
 		</div>
 		
 		<div style="font-size:13px;color:#aaa">
@@ -139,21 +242,20 @@ Thank you for watching the source code of this client. The code of all functions
 				</span>
 			</div>
 		</div>
-		
-		<div class="pd FlexBox">
-			<div class="FlexItem">
-				<input class="in_acmeURL inputLang" style="width:100%"
+
+		<div class="mt-4">
+			<div class="input-group">
+				<input class="form-control in_acmeURL inputLang"
 					placeholder-cn="请填写证书颁发机构ACME服务URL"
 					placeholder-en="Please fill in the Certificate Authority ACME Service URL">
-			</div>
-			<div style="padding-left:12px">
-				<span class="mainBtn mainBtnMin" onclick="acmeReadDirClick()" style="padding:0 50px">
+				<button class="btn btn-primary mainBtn" onclick="acmeReadDirClick()" type="button">
+					<i class="bi bi-arrow-clockwise me-2"></i>
 					<span class="langCN">读取服务目录</span>
-					<span class="langEN">Read service directory</span>
-				</span>
+					<span class="langEN">Read Directory</span>
+				</button>
 			</div>
 		</div>
-		<div class="acmeReadDirState"></div>
+		<div class="acmeReadDirState mt-3"></div>
 <script>
 //跨域支持的不好的ACME服务，直接复制源码到他们网站里面运行
 var acmeReadDirGotoCORSInit=function(){
@@ -241,195 +343,298 @@ var acmeReadDirGotoCORS=function(title){
 
 
 
+<!-- 步骤二：证书配置 -->
 <div class="mainBox">
-	<div class="pd itemTitle">
+	<div class="itemTitle">
 		<span class="langCN">步骤二：证书配置</span>
 		<span class="langEN">Step 2: Certificate Configuration</span>
 	</div>
+
 	<div class="step2Hide step1Show">
-		<div class="itemBox" style="color:#999">
+		<div class="alert alert-info" role="alert">
+			<i class="bi bi-clock me-2"></i>
 			<span class="langCN">等待中，请先完成第一步...</span>
 			<span class="langEN">Waiting, please complete step 1 first...</span>
 		</div>
 	</div>
+
 	<div class="step1Hide step2Show">
-		
-		
-		<div class="pd" style="font-size:13px;color:#aaa">
-			<span class="langCN">温馨提示：如果上次申请过证书，可以拖拽已下载保存的记录LOG文件到本页面，将自动填充上次的配置信息。</span>
-			<span class="langEN">Reminder: If you have applied for a certificate last time, you can drag and drop the downloaded and saved record LOG file to this page, and the last configuration information will be automatically filled in.</span>
+		<!-- 提示信息 -->
+		<div class="alert alert-info" role="alert">
+			<i class="bi bi-info-circle me-2"></i>
+			<span class="langCN">提示：可以拖拽LOG文件到页面自动填充配置</span>
+			<span class="langEN">Tip: Drag LOG file to page to auto-fill configuration</span>
 		</div>
-		
-		
+
+		<!-- 域名配置 -->
 		<div class="itemBox">
-			<div class="pd Bold">
-				<i class="must">*</i>
-				<span class="langCN">证书中要包含的域名：</span>
-				<span class="langEN">Domain name to be included in the certificate:</span>
+			<h6 class="fw-bold mb-3">
+				<span class="text-danger">*</span>
+				<i class="bi bi-globe me-2"></i>
+				<span class="langCN">证书域名：</span>
+				<span class="langEN">Certificate Domains:</span>
+			</h6>
+
+			<div class="mb-3">
+				<small class="text-muted">
+					<span class="langCN">支持多域名和通配符，例如：<code>example.com, *.example.com</code></span>
+					<span class="langEN">Supports multiple domains and wildcards, e.g.: <code>example.com, *.example.com</code></span>
+				</small>
 			</div>
-			<div class="pd" style="font-size:13px;color:#aaa">
-				<span class="langCN">一个证书可以包含多个域名（支持通配符），比如填写：<i class="i">a.com, *.a.com, b.com, *.b.com</i>；第一个域名将作为证书的通用名称（Common Name）；带通配符的域名只支持DNS验证，其他域名支持上传文件验证；注意：填了<i class="i">www.a.com</i>时，一般需要额外填上<i class="i">a.com</i>。</span>
-				<span class="langEN">A certificate can contain multiple domain names (wildcard are supported), for example, fill in: <i class="i">a.com, *.a.com, b.com, *.b.com</i>; the first domain name will be used as the Common Name of the certificate; Domain names with wildcard only support DNS verification, and other domain names support upload file verification ; Note: When <i class="i">www.a.com</i> is filled in, it is generally necessary to fill in <i class="i">a.com</i> additionally.</span>
-			</div>
-			<div class="FlexBox">
-				<div class="FlexItem">
-					<input class="in_domains inputLang" style="width:100%"
-						placeholder-cn="请填写你的域名，多个用逗号隔开"
-						placeholder-en="Please fill in your domain name, multiple separated by commas">
-				</div>
-				<div style="padding-left:15px;line-height:30px;font-size:13px;color:#aaa">
-					<label>
-						<input type="checkbox" class="choice_domains_store">
-						<span class="langCN">记住</span>
-						<span class="langEN">Remember</span>
-					</label>
-				</div>
-			</div>
-		</div>
-		
-		
-		<div class="itemBox">
-			<div class="pd Bold">
-				<i class="must">*</i>
-				<span class="langCN">证书的私钥：</span>
-				<span class="langEN">Private key of certificate:</span>
-			</div>
-			<div class="pd" style="font-size:13px;color:#aaa">
-				<span class="langCN">生成或填写的私钥仅用于ACME接口签名，支持<i class="i">RSA(2048位+)</i>、<i class="i">ECC(<span class="eccCurveNames"></span>曲线)</i>私钥；<span style="color:#f80">注意：证书私钥的类型决定了申请到的证书是RSA证书还是ECC(ECDSA)证书，RSA类型适用性更广也更常见</span>；本客户端不会对此私钥进行保存或发送给其他任何人；证书签发后在部署到服务器时，需使用到此私钥；建议每次申请证书时均生成新的证书私钥。</span>
-				<span class="langEN">The generated or filled private key is only used for ACME interface signature, and supports <i class="i">RSA (2048-bit+)</i> and <i class="i">ECC (<span class="eccCurveNames"></span> curve)</i> private keys; <span style="color:#f80">Note: The type of certificate private key determines whether the applied certificate is an RSA certificate or a ECC(ECDSA) certificate, RSA type is more widely applicable and more common;</span> this client will not save or send this private key to anyone else; this private key needs to be used when deploying to the server after the certificate is issued; it is recommended to generate a new certificate private key every time you apply for a certificate.</span>
-			</div>
-			<div class="pd">
-				<label>
-					<input type="radio" name="choice_privateKey" value="generateRSA">
-					<span class="langCN">创建新RSA私钥</span>
-					<span class="langEN">Generate RSA private key</span>
-				</label>
-				<label>
-					<input type="radio" name="choice_privateKey" value="generateECC">
-					<span class="langCN">创建新ECC私钥</span>
-					<span class="langEN">Generate ECC private key</span>
-				</label>
-				<label>
-					<input type="radio" name="choice_privateKey" value="manual">
-					<span class="langCN">手动填写私钥</span>
-					<span class="langEN">Manually fill in the private key</span>
-				</label>
-			</div>
-			<div class="privateKeyBox">
-				<textarea class="in_privateKey inputLang" style="width:100%;height:60px"
-					placeholder-cn="请填写pem私钥，私钥文本以 -----BEGIN PRIVATE KEY----- 开头（这是PKCS#8格式，里面带有 RSA|EC 字符的PKCS#1格式也是支持的）"
-					placeholder-en="Please fill in the pem private key. The private key text starts with -----BEGIN PRIVATE KEY----- (this is in PKCS#8 format, and PKCS#1 format with RSA|EC characters in it is also supported)"></textarea>
-			</div>
-			<div class="privateKeyState"></div>
-		</div>
-		
-		
-		<div class="itemBox">
-			<div class="pd Bold">
-				<i class="must">*</i>
-				<span class="langCN">ACME账户的私钥：</span>
-				<span class="langEN">Private key of ACME account:</span>
-			</div>
-			<div class="pd" style="font-size:13px;color:#aaa">
-				<span class="langCN">生成或填写的私钥仅用于ACME接口签名，支持<i class="i">RSA(2048位+)</i>、<i class="i">ECC(<span class="eccCurveNames"></span>曲线)</i>私钥；账户私钥类型对证书无影响；本客户端不会对此私钥进行保存或发送给其他任何人；一个私钥相当于一个账户，可用于吊销已签发的证书；建议每次申请证书时使用相同的一个私钥（这样短期内多次申请证书时，验证域名所有权的参数极有可能会保持相同），不过每次都生成一个新的私钥大部分情况下也不会有问题。</span>
-				<span class="langEN">The generated or filled private key is only used for ACME interface signature, and supports <i class="i">RSA (2048-bit+)</i> and <i class="i">ECC (<span class="eccCurveNames"></span> curve)</i> private keys; the account private key type has no effect on the certificate; this client will not save or send this private key to anyone else; A private key is equivalent to an account and can be used to revoke an issued certificate; it is recommended to use the same private key every time you apply for a certificate (in this way, the parameters used to verify the domain name ownership are likely to remain identical when multiple certificate applications are made in a short period of time); However, generating a new private key every time will not be a problem in most cases.</span>
-				<span class="eabShow" style="color:#f80">
-					<span class="langCN">注意：如果你选择的ACME服务（比如Google）要求提供EAB凭据并且限制了同一个EAB凭据只能绑定到一个ACME账户（私钥），那每次使用此EAB凭据时必须使用相同的一个私钥（首次时如果新创建了私钥，此新私钥需立即保存起来下次和此EAB凭据一起使用）。</span>
-					<span class="langEN">Note: If the ACME service you choose (such as Google) requires EAB credentials and limits the same EAB credentials to only one ACME account (private key), then you must use the same private key every time you use this EAB credential (if you generate a new private key for the first time, this new private key needs to be saved immediately and used with this EAB credential next time).</span>
+
+			<div class="input-group">
+				<span class="input-group-text">
+					<i class="bi bi-globe"></i>
 				</span>
+				<input class="form-control in_domains inputLang"
+					placeholder-cn="请填写你的域名，多个用逗号隔开"
+					placeholder-en="Enter your domains, separated by commas">
+				<div class="input-group-text">
+					<div class="form-check">
+						<input class="form-check-input choice_domains_store" type="checkbox" id="rememberDomains">
+						<label class="form-check-label" for="rememberDomains">
+							<small class="langCN">记住</small>
+							<small class="langEN">Remember</small>
+						</label>
+					</div>
+				</div>
 			</div>
-			<div class="pd">
-				<label>
-					<input type="radio" name="choice_accountKey" value="generateRSA">
-					<span class="langCN">创建新RSA私钥</span>
-					<span class="langEN">Generate RSA private key</span>
-				</label>
-				<label>
-					<input type="radio" name="choice_accountKey" value="generateECC">
-					<span class="langCN">创建新ECC私钥</span>
-					<span class="langEN">Generate ECC private key</span>
-				</label>
-				<label>
-					<input type="radio" name="choice_accountKey" value="manual">
-					<span class="langCN">手动填写私钥</span>
-					<span class="langEN">Manually fill in the private key</span>
-				</label>
-			</div>
-			<div class="accountKeyBox">
-				<textarea class="in_accountKey inputLang" style="width:100%;height:60px"
-					placeholder-cn="请填写pem私钥，私钥文本以 -----BEGIN PRIVATE KEY----- 开头（这是PKCS#8格式，里面带有 RSA|EC 字符的PKCS#1格式也是支持的）"
-					placeholder-en="Please fill in the pem private key. The private key text starts with -----BEGIN PRIVATE KEY----- (this is in PKCS#8 format, and PKCS#1 format with RSA|EC characters in it is also supported)"></textarea>
-			</div>
-			<div class="accountKeyState"></div>
 		</div>
-		
-		
+
+		<!-- 证书私钥配置 -->
 		<div class="itemBox">
-			<div class="pd Bold">
-				<i class="must">*</i>
-				<span class="langCN">ACME账户的联系邮箱：</span>
-				<span class="langEN">Contact email of ACME account:</span>
+			<h6 class="fw-bold mb-3">
+				<span class="text-danger">*</span>
+				<i class="bi bi-key me-2"></i>
+				<span class="langCN">证书私钥：</span>
+				<span class="langEN">Certificate Private Key:</span>
+			</h6>
+
+			<div class="alert alert-warning" role="alert">
+				<i class="bi bi-exclamation-triangle me-2"></i>
+				<small>
+					<span class="langCN">私钥类型决定证书类型，RSA兼容性更好</span>
+					<span class="langEN">Key type determines certificate type, RSA has better compatibility</span>
+				</small>
 			</div>
-			<div class="pd" style="font-size:13px;color:#aaa">
-				<span class="langCN">此邮箱地址用于证书颁发机构给你发送邮件，比如：证书过期前的续期通知提醒。</span>
-				<span class="langEN">This email address is used by the certificate authority to send you emails, such as a reminder of renewal notice before the certificate expires.</span>
-			</div>
-			<div class="FlexBox">
-				<div class="FlexItem">
-					<input class="in_email inputLang" style="width:100%"
-						placeholder-cn="请填写一个你的邮箱"
-						placeholder-en="Please fill in one of your email addresses">
+
+			<div class="row g-3 mb-3">
+				<div class="col-md-4">
+					<div class="form-check p-3 border rounded hover-card">
+						<input class="form-check-input" type="radio" name="choice_privateKey" value="generateRSA" id="key1">
+						<label class="form-check-label w-100" for="key1">
+							<div class="d-flex align-items-center">
+								<i class="bi bi-cpu text-primary me-2"></i>
+								<strong class="langCN">生成RSA私钥</strong>
+								<strong class="langEN">Generate RSA Key</strong>
+							</div>
+							<small class="text-muted langCN">推荐，兼容性最好</small>
+							<small class="text-muted langEN">Recommended, best compatibility</small>
+						</label>
+					</div>
 				</div>
-				<div style="padding-left:15px;line-height:30px;font-size:13px;color:#aaa">
-					<label>
-						<input type="checkbox" class="choice_email_store">
-						<span class="langCN">记住</span>
-						<span class="langEN">Remember</span>
-					</label>
+				<div class="col-md-4">
+					<div class="form-check p-3 border rounded hover-card">
+						<input class="form-check-input" type="radio" name="choice_privateKey" value="generateECC" id="key2">
+						<label class="form-check-label w-100" for="key2">
+							<div class="d-flex align-items-center">
+								<i class="bi bi-lightning text-warning me-2"></i>
+								<strong class="langCN">生成ECC私钥</strong>
+								<strong class="langEN">Generate ECC Key</strong>
+							</div>
+							<small class="text-muted langCN">更快，更小</small>
+							<small class="text-muted langEN">Faster, smaller</small>
+						</label>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-check p-3 border rounded hover-card">
+						<input class="form-check-input" type="radio" name="choice_privateKey" value="manual" id="key3">
+						<label class="form-check-label w-100" for="key3">
+							<div class="d-flex align-items-center">
+								<i class="bi bi-pencil text-secondary me-2"></i>
+								<strong class="langCN">手动填写</strong>
+								<strong class="langEN">Manual Input</strong>
+							</div>
+							<small class="text-muted langCN">使用现有私钥</small>
+							<small class="text-muted langEN">Use existing key</small>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="privateKeyBox">
+				<textarea class="form-control in_privateKey inputLang" rows="4"
+					placeholder-cn="请填写PEM格式私钥，以 -----BEGIN PRIVATE KEY----- 开头"
+					placeholder-en="Enter PEM format private key, starting with -----BEGIN PRIVATE KEY-----"></textarea>
+			</div>
+			<div class="privateKeyState mt-2"></div>
+		</div>
+
+		<!-- ACME账户私钥配置 -->
+		<div class="itemBox">
+			<h6 class="fw-bold mb-3">
+				<span class="text-danger">*</span>
+				<i class="bi bi-person-key me-2"></i>
+				<span class="langCN">ACME账户私钥：</span>
+				<span class="langEN">ACME Account Key:</span>
+			</h6>
+
+			<div class="alert alert-info" role="alert">
+				<i class="bi bi-info-circle me-2"></i>
+				<small>
+					<span class="langCN">建议重复使用同一私钥，便于管理证书</span>
+					<span class="langEN">Recommend reusing the same key for easier certificate management</span>
+				</small>
+			</div>
+
+			<div class="eabShow alert alert-warning" role="alert">
+				<i class="bi bi-exclamation-triangle me-2"></i>
+				<small>
+					<span class="langCN">注意：使用EAB凭据时必须使用相同的账户私钥</span>
+					<span class="langEN">Note: Must use the same account key when using EAB credentials</span>
+				</small>
+			</div>
+
+			<div class="row g-3 mb-3">
+				<div class="col-md-4">
+					<div class="form-check p-3 border rounded hover-card">
+						<input class="form-check-input" type="radio" name="choice_accountKey" value="generateRSA" id="acckey1">
+						<label class="form-check-label w-100" for="acckey1">
+							<div class="d-flex align-items-center">
+								<i class="bi bi-cpu text-primary me-2"></i>
+								<strong class="langCN">生成RSA私钥</strong>
+								<strong class="langEN">Generate RSA Key</strong>
+							</div>
+						</label>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-check p-3 border rounded hover-card">
+						<input class="form-check-input" type="radio" name="choice_accountKey" value="generateECC" id="acckey2">
+						<label class="form-check-label w-100" for="acckey2">
+							<div class="d-flex align-items-center">
+								<i class="bi bi-lightning text-warning me-2"></i>
+								<strong class="langCN">生成ECC私钥</strong>
+								<strong class="langEN">Generate ECC Key</strong>
+							</div>
+						</label>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-check p-3 border rounded hover-card">
+						<input class="form-check-input" type="radio" name="choice_accountKey" value="manual" id="acckey3">
+						<label class="form-check-label w-100" for="acckey3">
+							<div class="d-flex align-items-center">
+								<i class="bi bi-pencil text-secondary me-2"></i>
+								<strong class="langCN">手动填写</strong>
+								<strong class="langEN">Manual Input</strong>
+							</div>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="accountKeyBox">
+				<textarea class="form-control in_accountKey inputLang" rows="4"
+					placeholder-cn="请填写PEM格式私钥，以 -----BEGIN PRIVATE KEY----- 开头"
+					placeholder-en="Enter PEM format private key, starting with -----BEGIN PRIVATE KEY-----"></textarea>
+			</div>
+			<div class="accountKeyState mt-2"></div>
+		</div>
+
+		<!-- 联系邮箱配置 -->
+		<div class="itemBox">
+			<h6 class="fw-bold mb-3">
+				<span class="text-danger">*</span>
+				<i class="bi bi-envelope me-2"></i>
+				<span class="langCN">联系邮箱：</span>
+				<span class="langEN">Contact Email:</span>
+			</h6>
+
+			<div class="mb-3">
+				<small class="text-muted">
+					<span class="langCN">用于接收证书过期提醒等通知</span>
+					<span class="langEN">For receiving certificate expiration reminders and notifications</span>
+				</small>
+			</div>
+
+			<div class="input-group">
+				<span class="input-group-text">
+					<i class="bi bi-envelope"></i>
+				</span>
+				<input class="form-control in_email inputLang" type="email"
+					placeholder-cn="请填写你的邮箱地址"
+					placeholder-en="Enter your email address">
+				<div class="input-group-text">
+					<div class="form-check">
+						<input class="form-check-input choice_email_store" type="checkbox" id="rememberEmail">
+						<label class="form-check-label" for="rememberEmail">
+							<small class="langCN">记住</small>
+							<small class="langEN">Remember</small>
+						</label>
+					</div>
 				</div>
 			</div>
 		</div>
-		
-		
+
+		<!-- EAB凭据配置 -->
 		<div class="itemBox eabShow">
-			<div class="pd Bold">
+			<h6 class="fw-bold mb-3">
+				<i class="bi bi-key-fill me-2"></i>
 				<span class="langCN">EAB凭据：</span>
 				<span class="langEN">EAB Credentials:</span>
+			</h6>
+
+			<div class="alert alert-info" role="alert">
+				<i class="bi bi-info-circle me-2"></i>
+				<small>
+					<span class="langCN">需要在证书颁发机构控制台获取EAB凭据</span>
+					<span class="langEN">Need to obtain EAB credentials from CA console</span>
+				</small>
 			</div>
-			<div class="pd" style="font-size:13px;color:#aaa">
-				<span class="langCN">当前ACME服务要求提供外部账号绑定凭据（External Account Binding），比如ZeroSSL：你可以在ZeroSSL的管理控制台的 Developer 中获得此凭据，所以你需要先注册一个ZeroSSL的账号。</span>
-				<span class="langEN">The current ACME service requires external account binding credentials, such as ZeroSSL: You can obtain this credentials in the Developer of the ZeroSSL management console, so you need to register a ZeroSSL account first.</span>
-			</div>
-			<div class="FlexBox" style="line-height:30px">
-				<div><i class="must">*</i>EAB KID:</div>
-				<div class="FlexItem" style="padding:0 50px 0 6px">
-					<input class="in_eab_kid inputLang" style="width:100%"
+
+			<div class="row g-3">
+				<div class="col-md-6">
+					<label class="form-label">
+						<span class="text-danger">*</span>
+						<strong>EAB KID:</strong>
+					</label>
+					<input class="form-control in_eab_kid inputLang"
 						placeholder-cn="请填写EAB KID"
-						placeholder-en="Please fill in EAB KID">
+						placeholder-en="Enter EAB KID">
 				</div>
-				<div style="padding:0 6px 0 0"><i class="must">*</i>HMAC KEY:</div>
-				<div class="FlexItem">
-					<input class="in_eab_key inputLang" style="width:100%"
+				<div class="col-md-6">
+					<label class="form-label">
+						<span class="text-danger">*</span>
+						<strong>HMAC KEY:</strong>
+					</label>
+					<input class="form-control in_eab_key inputLang"
 						placeholder-cn="请填写EAB HMAC KEY"
-						placeholder-en="Please fill in EAB HMAC KEY">
+						placeholder-en="Enter EAB HMAC KEY">
 				</div>
 			</div>
 		</div>
-		
-		<div class="pd termsAgreeBox">
-			<label>
-				<input type="checkbox" class="choice_termsAgree">
-				<span class="termsAgreeTips"></span>
-			</label>
+
+		<!-- 服务条款同意 -->
+		<div class="termsAgreeBox">
+			<div class="form-check">
+				<input class="form-check-input choice_termsAgree" type="checkbox" id="termsAgree">
+				<label class="form-check-label" for="termsAgree">
+					<span class="termsAgreeTips"></span>
+				</label>
+			</div>
 		</div>
-		
-		<div class="Center" style="padding:15px 0 10px">
-			<span class="mainBtn" onclick="configStepClick()" style="width:300px">
-				<span class="langCN">确定</span>
-				<span class="langEN">OK</span>
-			</span>
+
+		<!-- 确定按钮 -->
+		<div class="text-center mt-4">
+			<button class="btn btn-primary btn-lg px-5" onclick="configStepClick()">
+				<i class="bi bi-check-circle me-2"></i>
+				<span class="langCN">开始配置</span>
+				<span class="langEN">Start Configuration</span>
+			</button>
 		</div>
-		<div class="configStepState"></div>
+		<div class="configStepState mt-3"></div>
 		
 	</div>
 </div>
@@ -724,18 +929,7 @@ var verifyBoxShow=function(){
 			<span class="langEN">Then it is to connect with ACME to realize certificate issuance and realize interactive UI; for connecting with ACME, you can directly refer to the RFC 8555 standard. The ACME services of some certificate authorities do not support browsers well, and do not provide complete <i class="i">Access-Control-*</i> response headers, so that the service interface cannot be called directly in the web page; the current solution is very simple and rude, such as ZeroSSL: detect this ACME When there is a cross-domain problem with the service, the <i class="i">acmeReadDirGotoCORS()</i> method will be called to tell the user the operation steps (you can call this method manually by <a onclick="acmeReadDirGotoCORS();alert('Call succeeded, please go to step 1')">clicking here</a>), and the cross-domain problem will be eliminated by running this client in their page (if we can't beat them, we'd better join them).</span>
 		</div>
 	</div>
-	
-	<div class="itemBox">
-		<div class="pd Bold">
-			<span class="langCN">QQ群：交流与支持</span>
-			<span class="langEN">QQ group: communication and support</span>
-		</div>
-		<div class="pd" style="font-size:13px;color:#aaa">
-			<span class="langCN">欢迎加QQ群：<i class="i">421882406</i>，纯小写口令：<i class="i">xiangyuecn</i>。如需功能定制，网站、App、小程序、前端和后端等开发需求，请加此QQ群，联系群主（即作者），谢谢~</span>
-			<span class="langEN">Welcome to join the QQ group: <i class="i">421882406</i> , code: <i class="i">xiangyuecn</i> . If you need function customization, website, app, applet, front-end and back-end development needs, please join this QQ group and contact the group owner (ie the author), thank you~</span>
-		</div>
-	</div>
-	
+
 </div>
 
 
@@ -746,7 +940,7 @@ var verifyBoxShow=function(){
 	
 	<div class="pd">
 		<span class="versionBox"></span>
-		<a style="margin-left:15px" href="https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE" target="_blank">License: GPL-3.0</a>
+		<a style="margin-left:15px" href="https://github.com/muzihuaner/ACME-HTML-Web-Browser-Client/blob/main/LICENSE" target="_blank">License: GPL-3.0</a>
 	</div>
 </div>
 
@@ -754,111 +948,169 @@ var verifyBoxShow=function(){
 
 <div class="toastState" style="display:none;position:fixed;padding:10px;bottom:10px;right:10px;width:360px;max-height:120px;overflow-y:auto;background:#fff;box-shadow: 0px 0px 3px #aaa;border-radius: 10px;"></div>
 
-<div class="donateWidget" style="position:fixed;top:30%;right:5px;width:160px">
-	<div style="border-radius:12px;background:linear-gradient(160deg, rgba(0,179,255,.7) 20%, rgba(177,0,255,.7) 80%);max-width:300px;padding:20px 10px;text-align: center;">
-		<div style="font-size:18px;color:#fff;">
-			<span class="langCN">赏包辣条？</span>
-			<span class="langEN">Donate a Coke?</span>
+<!-- 捐赠组件 -->
+<!-- <div class="donateWidget" style="position:fixed;top:30%;right:15px;width:180px;z-index:1000;">
+	<div class="card border-0 shadow-lg" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+		<div class="card-body text-center text-white p-3">
+			<i class="bi bi-heart-fill text-danger mb-2" style="font-size: 1.5rem;"></i>
+			<h6 class="card-title mb-2">
+				<span class="langCN">支持项目</span>
+				<span class="langEN">Support</span>
+			</h6>
+			<p class="card-text small mb-3">
+				<span class="langCN">如果这个工具对您有帮助</span>
+				<span class="langEN">If this tool helps you</span>
+			</p>
+			<div>
+				<span class="langCN">
+					<a id="id_ek8v" target="_blank" class="btn btn-light btn-sm">
+						<i class="bi bi-cup-hot me-1"></i>打赏 <span class="donateBtnIco"></span>
+					</a>
+					<script> id_ek8v.href=/gitee\.io/.test(location.host)?"https://xiangyuecn.gitee.io/docs/about.html":"https://xiangyuecn.github.io/Docs/about.html" </script>
+				</span>
+				<span class="langEN">
+					<a href="https://xiangyuecn.github.io/Docs/about.html" target="_blank" class="btn btn-light btn-sm">
+						<i class="bi bi-cup-hot me-1"></i>Donate <span class="donateBtnIco"></span>
+					</a>
+				</span>
+			</div>
 		</div>
-		<div style="font-size:14px;color:#fff;">
-			<div class="langCN" style="padding:10px 0">客户端工具开发维护不易，期望本项目对你能有所帮助，欢迎通过下面按钮打赏作者~</div>
-			<span class="langEN">It is not easy to develop and maintain client tools. I hope this project can help you. Welcome to reward the author through the following buttons~</span>
-		</div>
-		<div>
-			<span class="langCN">
-				<a id="id_ek8v" target="_blank" class="mainBtn mainBtnMin" style="color:#fff">打赏 <span class="donateBtnIco"></span></a>
-				<script> id_ek8v.href=/gitee\.io/.test(location.host)?"https://xiangyuecn.gitee.io/docs/about.html":"https://xiangyuecn.github.io/Docs/about.html" </script>
-			</span>
-			<span class="langEN">
-				<a href="https://xiangyuecn.github.io/Docs/about.html" target="_blank" class="mainBtn mainBtnMin" style="color:#fff">Donate <span class="donateBtnIco"></span></a>
-			</span>
-		</div>
+	</div>
+</div> -->
+
+<!-- 语言切换 -->
+<div class="langBtnBox position-fixed top-0 end-0 m-3">
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-outline-light btn-sm langBtn langBtn_cn" onclick="LangClick('cn')">
+			<i class="bi bi-translate me-1"></i>中文
+		</button>
+		<button type="button" class="btn btn-outline-light btn-sm langBtn langBtn_en" onclick="LangClick('en')">
+			<i class="bi bi-translate me-1"></i>EN
+		</button>
 	</div>
 </div>
 
-<div class="langBtnBox" style="position:fixed;top:0;right:0;padding:5px 10px;font-size:14px;border-radius:0 0 0 10px;background:#f5f5f5;">
-	Language:
-	  <a class="langBtn langBtn_cn" onclick="LangClick('cn')">中文</a>
-	| <a class="langBtn langBtn_en" onclick="LangClick('en')">EN</a>
 </div>
 
-</div>
+<!-- Bootstrap 5 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- 图标备用方案检测 -->
+<script>
+// 检测Bootstrap Icons是否加载成功
+function checkBootstrapIcons() {
+	// 创建一个测试元素
+	const testElement = document.createElement('i');
+	testElement.className = 'bi bi-shield-check-fill';
+	testElement.style.position = 'absolute';
+	testElement.style.left = '-9999px';
+	document.body.appendChild(testElement);
 
+	// 检查字体是否加载
+	const computedStyle = window.getComputedStyle(testElement);
+	const fontFamily = computedStyle.getPropertyValue('font-family');
+
+	// 清理测试元素
+	document.body.removeChild(testElement);
+
+	// 如果Bootstrap Icons没有加载，显示备用图标
+	if (!fontFamily.includes('bootstrap-icons')) {
+		document.querySelectorAll('.feature-icon').forEach(icon => {
+			const biIcon = icon.querySelector('i[class*="bi-"]');
+			const fallbackIcon = icon.querySelector('.fallback-icon');
+			if (biIcon && fallbackIcon) {
+				biIcon.style.display = 'none';
+				fallbackIcon.style.display = 'inline-block';
+			}
+		});
+	}
+}
+
+// 页面加载完成后检测
+document.addEventListener('DOMContentLoaded', function() {
+	// 延迟检测，确保字体有时间加载
+	setTimeout(checkBootstrapIcons, 1000);
+});
+</script>
 
 <style>
-body{
+:root {
+	--primary-color: #0d6efd;
+	--secondary-color: #6c757d;
+	--success-color: #198754;
+	--danger-color: #dc3545;
+	--warning-color: #ffc107;
+	--info-color: #0dcaf0;
+	--light-color: #f8f9fa;
+	--dark-color: #212529;
+	--border-radius: 0.5rem;
+	--box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+	--box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+}
+
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	min-height: 100vh;
 	word-wrap: break-word;
-	--word-break: break-all;
-	background:#f5f5f5 center top no-repeat;
-	background-size: auto 680px;
-}
-pre{
-	white-space:pre-wrap;
-}
-label,label *{
-	cursor: pointer;
-}
-label:hover{
-	color:#06c;
-}
-a{
-	text-decoration: none;
-	color:#06c;
-	cursor: pointer;
-}
-a:hover{
-	color:#f00;
-}
-input, textarea {
-	--outline: 0;
-	border: 1px solid #999;
-	padding: 2px;
-	box-sizing: border-box;
-	font-size: 15px;
-	line-height:24px;
 }
 
-.main{
-	max-width:900px;
-	margin:0 auto;
-	padding-bottom:80px
+.main {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 2rem 1rem 5rem;
 }
 
-.mainBox{
-	margin-top:12px;
-	padding: 12px;
-	border-radius: 6px;
-	background: #fff;
-	box-shadow: 2px 2px 3px #aaa;
+.mainBox {
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(10px);
+	border-radius: var(--border-radius);
+	box-shadow: var(--box-shadow-lg);
+	margin-bottom: 2rem;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	padding:inherit;
+}
+
+.main-load {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	font-size: 1.5rem;
+	color: white;
 }
 
 
-.mainBtn{
+.mainBtn {
 	display: inline-block;
 	cursor: pointer;
 	border: none;
-	border-radius: 3px;
-	background: #f80;
-	color:#fff;
-	padding: 0 15px;
-	line-height: 36px;
-	height: 36px;
-	overflow: hidden;
-	vertical-align: middle;
+	border-radius: var(--border-radius);
+	background: var(--primary-color);
+	color: white;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 500;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	box-shadow: var(--box-shadow);
 }
-.mainBtnMin{
-	height: 30px;
-	line-height: 30px;
-	font-size: 14px;
-	padding: 0 12px;
+
+.mainBtnMin {
+	padding: 0.5rem 1rem;
+	font-size: 0.875rem;
 }
-.mainBtn:hover{
-	opacity:0.8;
+
+.mainBtn:hover {
+	background: #0b5ed7;
+	transform: translateY(-2px);
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+	color: white;
 }
-.mainBtn:active{
-	opacity:1;
-	background: #f00;
+
+.mainBtn:active {
+	transform: translateY(0);
+	background: #0a58ca;
 }
 
 .pd{
@@ -965,16 +1217,247 @@ i.must{
 	color:red;
 	font-style:normal;
 }
-.itemTitle{
-	font-size: 24px;
-	font-weight: bold;
-	color: #03baed;
+.itemTitle {
+	font-size: 1.75rem;
+	font-weight: 600;
+	color: var(--primary-color);
+	margin-bottom: 1.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid var(--primary-color);
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 }
-.itemBox{
-	padding:8px;
-	margin-bottom:6px;
-	border:1px #ccc dashed;
-	border-radius: 6px;
+
+.itemTitle::before {
+	content: '';
+	width: 4px;
+	height: 2rem;
+	background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+	border-radius: 2px;
+}
+
+.itemBox {
+	padding: 1.5rem;
+	margin-bottom: 1rem;
+	border: 1px solid rgba(13, 110, 253, 0.2);
+	border-radius: var(--border-radius);
+	background: rgba(255, 255, 255, 0.8);
+	transition: all 0.3s ease;
+}
+
+.itemBox:hover {
+	border-color: var(--primary-color);
+	box-shadow: var(--box-shadow);
+	transform: translateY(-2px);
+}
+
+/* 现代化卡片样式 */
+.hover-card {
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.hover-card:hover {
+	border-color: var(--primary-color) !important;
+	box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.15);
+	transform: translateY(-2px);
+}
+
+.form-check-input:checked ~ .form-check-label .hover-card,
+.form-check:has(.form-check-input:checked) .hover-card {
+	border-color: var(--primary-color) !important;
+	background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* 输入框样式 */
+.form-control, .form-select {
+	border-radius: var(--border-radius);
+	border: 1px solid #dee2e6;
+	transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* 警告样式 */
+.alert {
+	border: none;
+	border-radius: var(--border-radius);
+	border-left: 4px solid;
+}
+
+.alert-warning {
+	border-left-color: var(--warning-color);
+	background-color: rgba(255, 193, 7, 0.1);
+}
+
+/* 徽章样式 */
+.badge {
+	border-radius: var(--border-radius);
+}
+
+/* 按钮组样式 */
+.btn {
+	border-radius: var(--border-radius);
+	transition: all 0.3s ease;
+}
+
+.btn:hover {
+	transform: translateY(-1px);
+}
+
+/* 加载动画 */
+.spinner-border {
+	width: 3rem;
+	height: 3rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+	.main {
+		padding: 1rem 0.5rem 3rem;
+	}
+
+	.mainBox {
+		margin-bottom: 1rem;
+	}
+
+	.itemBox {
+		padding: 1rem;
+	}
+
+	.donateWidget {
+		position: relative !important;
+		width: 100% !important;
+		right: auto !important;
+		top: auto !important;
+		margin-top: 2rem;
+	}
+
+	.langBtnBox {
+		position: relative !important;
+		top: auto !important;
+		right: auto !important;
+		margin: 1rem 0;
+		text-align: center;
+	}
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.mainBox {
+	animation: fadeInUp 0.6s ease-out;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--primary-color);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #0b5ed7;
+}
+
+/* 代码块样式 */
+code {
+	background-color: rgba(13, 110, 253, 0.1);
+	color: var(--primary-color);
+	padding: 0.2rem 0.4rem;
+	border-radius: 0.25rem;
+	font-size: 0.875em;
+}
+
+/* 表单验证样式 */
+.is-invalid {
+	border-color: var(--danger-color) !important;
+}
+
+.is-valid {
+	border-color: var(--success-color) !important;
+}
+
+/* 步骤指示器 */
+.step-indicator {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 2rem;
+}
+
+.step-indicator .step {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: #e9ecef;
+	color: #6c757d;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 1rem;
+	font-weight: bold;
+	transition: all 0.3s ease;
+}
+
+.step-indicator .step.active {
+	background: var(--primary-color);
+	color: white;
+}
+
+.step-indicator .step.completed {
+	background: var(--success-color);
+	color: white;
+}
+
+/* 图标备用方案 */
+.feature-icon {
+	position: relative;
+	display: inline-block;
+}
+
+.feature-icon .fallback-icon {
+	display: none;
+}
+
+/* 当Bootstrap Icons未加载时显示备用图标 */
+.feature-icon i:not([class*="bi-"]):before,
+.feature-icon i:empty + .fallback-icon {
+	display: none;
+}
+
+.feature-icon i:empty ~ .fallback-icon {
+	display: inline-block;
+}
+
+/* 检测Bootstrap Icons是否加载 */
+@supports not (font-family: "bootstrap-icons") {
+	.feature-icon i {
+		display: none;
+	}
+	.feature-icon .fallback-icon {
+		display: inline-block;
+	}
 }
 </style>
 
