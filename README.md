@@ -1,4 +1,4 @@
-# 🔒 快点SSL证书SSL证书申请工具 | QuickSSL Certificate Tool
+# 🔒 快点SSL证书申请工具 | QuickSSL Certificate Tool
 
 一个现代化的网页版ACME客户端，用于免费申请SSL/TLS证书。支持Let's Encrypt、ZeroSSL、Google Trust Services等多个证书颁发机构。
 
